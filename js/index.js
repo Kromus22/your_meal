@@ -39,7 +39,7 @@ const ingredientsListItems = product.ingredients.map((item) => {
 
 modalProductIngredients.append(...ingredientsListItems);
 
-
+//открытие модалки через делегирование. клик на весь список и в нём уже отслеживаю где именно был клик.
 catalogList.addEventListener('click', (evt) => {
   const target = evt.target;
   if (target.closest('.product__detail') || target.closest('.product__image')) {
