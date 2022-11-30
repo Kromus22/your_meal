@@ -21,29 +21,58 @@ const product = {
     'Курочка']
 };
 
-modalProductTitle.textContent = product.title;
-modalProductImage.scr = product.image;
-modalProductDescr.textContent = product.description;
-modalProductCalories.textContent = `${product.weight}г, ккал  ${product.calories}`;
-modalProductPrice.textContent = product.price;
+const openModal = (product) => {
+  modalProductTitle.textContent = product.title;
+  modalProductImage.src = product.image;
+  modalProductDescr.textContent = product.description;
+  modalProductCalories.textContent = `${product.weight}г, ккал  ${product.calories}`;
+  modalProductPrice.textContent = product.price;
 
 
-modalProductIngredients.textContent = '';
+  modalProductIngredients.textContent = '';
 
-const ingredientsListItems = product.ingredients.map((item) => {
+  const ingredientsListItems = product.ingredients.map((item) => {
+    const li = document.createElement('li');
+    li.classList.add('ingredients__item');
+    li.textContent = item;
+    return li;
+  });
+
+  modalProductIngredients.append(...ingredientsListItems);
+
+  modalProduct.classList.add('modal_open');
+};
+
+const createCardProduct = (product) => {
   const li = document.createElement('li');
-  li.classList.add('ingredients__item');
-  li.textContent = item;
-  return li;
-});
+  li.classList.add('catlog__item');
 
-modalProductIngredients.append(...ingredientsListItems);
+  li.innerHTML = `
+    <article class="product">
+      <img class="product__image" src="${product.image}" alt="${product.title}">
+      <p class="product__price">${product.price}<span class="currency">₽</span></p>
+      <h3 class="product__title">
+        <button class="product__detail">${product.title}</button>
+      </h3>
+      <p class="product__weight">${product.weight}г</p>
+      <button class="product__add">Добавить</button>
+    </article>
+  `
+
+  return li;
+};
+
+catalogList.textContent = '';
+
+const card = createCardProduct(product);
+catalogList.append(card);
+
 
 //открытие модалки через делегирование. клик на весь список и в нём уже отслеживаю где именно был клик.
 catalogList.addEventListener('click', (evt) => {
   const target = evt.target;
   if (target.closest('.product__detail') || target.closest('.product__image')) {
-    modalProduct.classList.add('modal_open');
+    openModal(product);
   }
 });
 
